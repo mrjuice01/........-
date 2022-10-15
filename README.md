@@ -16,15 +16,14 @@
 
 - [`1st GC`](https://chat.whatsapp.com/J7nL30R7Y8i3iiXlsrS1N2)
 
-# Setup For Deployment 👇
+# Before u run
 
-# Install Manually 👇
+# Click all👇
 ## `Requirements`
-* [Node.js](https://nodejs.org/en/)
-* [Git](https://git-scm.com/downloads)
-* [FFmpeg](https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2020-12-08-13-03/ffmpeg-n4.3.1-26-gca55240b8c-win64-gpl-4.3.zip)
-* [Libwebp](https://developers.google.com/speed/webp/download)
-* Any text editor
+* [Subscribe](https://youtube.com/channel/UCK29cXcpU7LKQCldqOsPzgg)
+* [Follow](https:/instagram.com/mr_juice7)
+* [Start🌟](https://github.com/mrjuice01)
+  
 ## `Clone Repo & Installation dependencies`
 ```bash
 git clone https://github.com/mrjuice01
