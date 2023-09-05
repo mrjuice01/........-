@@ -22,8 +22,8 @@
 //════════════════════════════//
 
 require('./settings')
-const { default: XeonBotIncConnect, useSingleFileAuthState, DisconnectReason, fetchLatestBaileysVersion, generateForwardMessageContent, prepareWAMessageMedia, generateWAMessageFromContent, generateMessageID, downloadContentFromMessage, makeInMemoryStore, jidDecode, proto } = require("@adiwajshing/baileys")
-const { state, saveState } = useSingleFileAuthState(`./${sessionName}.json`)
+const { default: XeonBotIncConnect, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, generateForwardMessageContent, prepareWAMessageMedia, generateWAMessageFromContent, generateMessageID, downloadContentFromMessage, makeInMemoryStore, jidDecode, proto } = require("@adiwajshing/baileys")
+const { state, saveState } = useMultiFileAuthState(`./${sessionName}.json`)
 const pino = require('pino')
 const { Boom } = require('@hapi/boom')
 const fs = require('fs')
@@ -143,7 +143,6 @@ let docs = pickRandom(documents)
 
     XeonBotInc.ev.on('group-participants.update', async (anu) => {
         console.log(anu)
-        //if (!wlcm.includes(anu.id)) return //remove forwad slashes to make it welcome on off
         try {
             let metadata = await XeonBotInc.groupMetadata(anu.id)
             let participants = anu.participants
@@ -155,46 +154,36 @@ let docs = pickRandom(documents)
                     ppuser = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
                 }
 
-                // Get Profile Picture Group
+                //Get Profile Picture Group\\
                 try {
                     ppgroup = await XeonBotInc.profilePictureUrl(anu.id, 'image')
                 } catch {
                     ppgroup = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
                 }
 
+//welcome\\
+        let nama = await XeonBotInc.getName(num)
+memb = metadata.participants.length
+XeonWlcm = await getBuffer(`https://hardianto.xyz/api/welcome3?profile=${encodeURIComponent(ppuser)}&name=${encodeURIComponent(nama)}&bg=https://telegra.ph/file/d460e086f9f9bf6b04e17.jpg&namegb=${encodeURIComponent(metadata.subject)}&member=${encodeURIComponent(memb)}`)
+XeonLft = await getBuffer(`https://hardianto.xyz/api/goodbye3?profile=${encodeURIComponent(ppuser)}&name=${encodeURIComponent(nama)}&bg=https://telegra.ph/file/d460e086f9f9bf6b04e17.jpg&namegb=${encodeURIComponent(metadata.subject)}&member=${encodeURIComponent(memb)}`)
                 if (anu.action == 'add') {
-                const buffer = await getBuffer(ppuser)
+                const xeonbuffer = await getBuffer(ppuser)
                 let xeonName = num
                 const xtime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
 	            const xdate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
 	            const xmembers = metadata.participants.length
-                let unicorndoc = {key: {fromMe: false,"participant":"0@s.whatsapp.net", "remoteJid": "923474187615-1604595598@g.us"}, "message": {orderMessage: {itemCount: 9999999,status: 200, thumbnail: buffer, surface: 200, message: `${metadata.subject}`, orderTitle: 'xeon', sellerJid: '0@s.whatsapp.net'}}, contextInfo: {"forwardingScore":999,"isForwarded":true},sendEphemeral: true}
-                xeonbody = `╭─────────────┈⊷
-│ 「 *WELCOME🌹* 」 ╰┬────────────┈⊷
-┌┤
-││🏮 〔 @${xeonName.split("@")[0]} 
-││◦➛
-││🏮  *Wᴇʟᴄᴏᴍᴇ Tᴏ*
-││◦➛
-││🏮  ${metadata.subject}
-││◦➛
-││🏮  *Mᴇᴍʙᴇʀ*
-││◦➛
-││🏮 ${xmembers}th
-││◦➛
-││🏮  *Jᴏɪɴᴇᴅ*
-││◦➛
-││🏮  ${xtime} ${xdate}
-│╰────────────┈⊷
-╰═════════════┅┄• ⳹
-╔════⧫ BayMax ⧫ ═══════◉
-║
-║ *❖*   +2 6 3 7 8 0 6 9 9 9 8 8
-╚═══════════════════╝
-└┬═════════════◉
-   ║❖ *WELCOME❖*
-   └══════════════╝`
-   //if you copy the code value,
+                let unicorndoc = {key: {fromMe: false,"participant":"0@s.whatsapp.net", "remoteJid": "916909137213-1604595598@g.us"}, "message": {orderMessage: {itemCount: 9999999,status: 200, thumbnail: XeonWlcm, surface: 200, message: `${metadata.subject}`, orderTitle: 'xeon', sellerJid: '0@s.whatsapp.net'}}, contextInfo: {"forwardingScore":999,"isForwarded":true},sendEphemeral: true}
+                xeonbody = `┌─❖
+│「 𝗛𝗶 👋 」
+└┬❖ 「 @${xeonName.split("@")[0]}  」
+   │✑  𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼 
+   │✑  ${metadata.subject}
+   │✑  𝗠𝗲𝗺𝗯𝗲𝗿 : 
+   │✑ ${xmembers}th
+   │✑  𝗝𝗼𝗶𝗻𝗲𝗱 : 
+   │✑ ${xtime} ${xdate}
+   └───────────────┈ ⳹`
+      //if you copy the code value,
    //dont forget to put my name(Xeon) as credit
    //you fail to put, i sue you for sure!
 let buttons = [
@@ -203,7 +192,7 @@ let buttons = [
 let buttonMessage = {
 document: fs.readFileSync('./XeonMedia/theme/cheems.xlsx'),
 mimetype: docs,
-jpegThumbnail:buffer,
+jpegThumbnail:XeonWlcm,
 mentions: [num],
 fileName: `${metadata.subject}`,
 fileLength: 99999999999999,
@@ -215,58 +204,39 @@ contextInfo:{externalAdReply:{
 title: `${ownername}`,
 body: `Don't forget to read group description`,
 mediaType:2,
-thumbnail: buffer,
+thumbnail: XeonWlcm,
 sourceUrl: `${websitex}`,
 mediaUrl: `${websitex}`
 }}
 }
-
-const devsound = fs.readFileSync('./XeonMedia/audio/khan.mp3')
-           XeonBotInc.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
-
 XeonBotInc.sendMessage(anu.id, buttonMessage, {quoted:unicorndoc})
                 } else if (anu.action == 'remove') {
-                	const buffer = await getBuffer(ppuser)
+                	const xeonbuffer = await getBuffer(ppuser)
                     const xeontime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
 	                const xeondate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
                 	let xeonName = num
                     const xeonmembers = metadata.participants.length
-                    let unicorndoc = {key: {fromMe: false,"participant":"0@s.whatsapp.net", "remoteJid": "923474187615-1604595598@g.us"}, "message": {orderMessage: {itemCount: 9999999,status: 200, thumbnail: buffer, surface: 200, message: `${metadata.subject}`, orderTitle: 'xeon', sellerJid: '0@s.whatsapp.net'}}, contextInfo: {"forwardingScore":999,"isForwarded":true},sendEphemeral: true}
-                    xeonbody = `╭─────────────┈⊷
-│ 「 *GOODBYE👋🏻* 」 ╰┬────────────┈⊷
-┌┤
-││🏮 〔 @${xeonName.split("@")[0]}   〕
-││◦➛
-││🏮  *Lᴇғᴛ*
-││◦➛
-││🏮  ${metadata.subject}
-││◦➛
-││🏮  *Mᴇᴍʙᴇʀ*
-││◦➛
-││🏮  ${xeonmembers}th
-││◦➛
-││🏮  *Tɪᴍᴇ*
-││◦➛
-││🏮  ${xeontime} ${xeondate}
-│╰────────────┈⊷
-╰═════════════┅┄• ⳹
-╔════⧫ BayMax ⧫ ═══════◉
-║
-║ *❖*   +2 6 3 7 8 0 6 9 9 9 8 8
-╚═══════════════════╝
-└┬═════════════◉
-   ║❖ *Bye Bye ❖*
-   └══════════════╝`
+                    let unicorndoc = {key: {fromMe: false,"participant":"0@s.whatsapp.net", "remoteJid": "916909137213-1604595598@g.us"}, "message": {orderMessage: {itemCount: 9999999,status: 200, thumbnail: xeonbuffer, surface: 200, message: `${metadata.subject}`, orderTitle: 'xeon', sellerJid: '0@s.whatsapp.net'}}, contextInfo: {"forwardingScore":999,"isForwarded":true},sendEphemeral: true}
+                    xeonbody = `┌─❖
+│「 𝗚𝗼𝗼𝗱𝗯𝘆𝗲 👋 」
+└┬❖ 「 @${xeonName.split("@")[0]}  」
+   │✑  𝗟𝗲𝗳𝘁 
+   │✑ ${metadata.subject}
+   │✑  𝗠𝗲𝗺𝗯𝗲𝗿 : 
+   │✑ ${xeonmembers}th
+   │✑  𝗧𝗶𝗺𝗲 : 
+   │✑  ${xeontime} ${xeondate}
+   └───────────────┈ ⳹`
       //if you copy the code value,
    //dont forget to put my name(Xeon) as credit
    //you fail to put, i sue you for sure!
 let buttons = [
-{buttonId: `wkwkwk`, buttonText: {displayText: 'Bye 🥀'}, type: 1}
+{buttonId: `wkwkwk`, buttonText: {displayText: 'Sayonara 🥀'}, type: 1}
 ]
 let buttonMessage = {
 document: fs.readFileSync('./XeonMedia/theme/cheems.xlsx'),
 mimetype: docs,
-jpegThumbnail:buffer,
+jpegThumbnail:XeonLft,
 mentions: [num],
 fileName: `${metadata.subject}`,
 fileLength: 99999999999999,
@@ -278,15 +248,11 @@ contextInfo:{externalAdReply:{
 title: `${ownername}`,
 body: `Bye! my friend, take care.`,
 mediaType:2,
-thumbnail: buffer,
+thumbnail: XeonLft,
 sourceUrl: `${websitex}`,
 mediaUrl: `${websitex}`
 }}
 }
-
-const devsound = fs.readFileSync('./XeonMedia/audio/asif.mp3')
-           XeonBotInc.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
-
 XeonBotInc.sendMessage(anu.id, buttonMessage, {quoted:unicorndoc})
                 }
             }
